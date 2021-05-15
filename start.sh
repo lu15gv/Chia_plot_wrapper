@@ -21,6 +21,7 @@ if [ ! -f "$PLOTS_LOG" ]; then
 	echo "ID,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
 fi
 
+BASEDIR=$(dirname "$0")
 $BASEDIR/plot.sh id="A" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$PLOTS_LOG queue_size=$QUEUE_SIZE chia=$CHIA &
 $BASEDIR/plot.sh id="B" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$PLOTS_LOG queue_size=$QUEUE_SIZE chia=$CHIA &
 $BASEDIR/plot.sh id="C" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$PLOTS_LOG queue_size=$QUEUE_SIZE chia=$CHIA &
