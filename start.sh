@@ -38,15 +38,15 @@ esac
 
 if [ ! -f "$LOGS_DIR" ]; then
     touch $LOGS_DIR
-	echo "ID,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $LOGS_DIR
+	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $LOGS_DIR
 fi
 
-$BASEDIR/plot.sh id="A" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="B" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="C" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="D" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="E" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="F" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="A" description="Running 6 in parallel" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="B" description="Running 6 in parallel" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="C" description="Running 6 in parallel" k=32 temp="D:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="D" description="Running 6 in parallel" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="E" description="Running 6 in parallel" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="F" description="Running 6 in parallel" k=32 temp="G:/" final="F:/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 
 wait
 
