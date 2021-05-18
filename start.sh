@@ -10,7 +10,8 @@ case "${unameOut}" in
     MINGW64_NT-10.0*)	machine=MinGw;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
-
+echo "Running on: $machine"
+echo "Base directory: $BASEDIR"
 ###### Instructions ######
 ### 1.- Set chia exectubale directory
 ###		Windows
