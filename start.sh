@@ -37,7 +37,7 @@ echo "Base directory: $BASEDIR"
 ###		6 parallel queues X 3 plots per queue = 18 plots in total.
 		QUEUE_SIZE=3
 ###	4.- Push notification
-		PUSH=false
+		PUSH=true
 		if [ "$PUSH" = true ]; then
 			source "${BASEDIR}/push_keys.sh"
 		fi
