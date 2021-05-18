@@ -10,8 +10,7 @@ case "${unameOut}" in
     MINGW64_NT-10.0*)	machine=Windows;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
-echo "Running on: $machine"
-echo "Base directory: $BASEDIR"
+
 ###### Instructions ######
 ### 1.- Set chia exectubale directory
 ###		Windows
@@ -40,9 +39,12 @@ echo "Base directory: $BASEDIR"
 ###	4.- Push notification
 		PUSH=true
 		if [ "$PUSH" = true ]; then
-			source "${BASEDIR}/push_keys.sh"
+			. "${BASEDIR}/push_keys.sh"
 		fi
 ### 5.- Other params, like temporal/final directory, threads and RAM, can be edited below.
+
+echo "Running on: $machine"
+echo "Base directory: $BASEDIR"
 
 if [ ! -f "$LOGS_DIR" ]; then
     touch $LOGS_DIR
