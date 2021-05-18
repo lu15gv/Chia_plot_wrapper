@@ -11,6 +11,7 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 echo "Running on: $machine"
+echo "Base directory: $BASEDIR"
 ###### Instructions ######
 ### 1.- Set chia exectubale directory
 ###		Windows
