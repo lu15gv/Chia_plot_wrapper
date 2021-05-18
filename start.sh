@@ -14,7 +14,7 @@ esac
 ###### Instructions ######
 ### 1.- Set chia exectubale directory
 ###		Windows
-		if [ "$machine" = "Linux" ]; then
+		if [ "$machine" = "Windows" ]; then
 			CHIA=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.5/resources/app.asar.unpacked/daemon/chia.exe
 		fi
 ###		MacOS
@@ -66,6 +66,6 @@ if [ "$PUSH" = true ]; then
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
-	-d 'title=All queus have finished' \
-	-d 'body=:)'
+	-d "title=All queus have finished" \
+	-d "body=Machine: ${machine}"
 fi
