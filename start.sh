@@ -14,7 +14,7 @@ echo "Running on: $machine"
 ###### Instructions ######
 ### 1.- Set chia exectubale directory
 ###		Windows
-		if [ "$machine" = "Linux" ]; then
+		if [ "$machine" = "Windows" ]; then
 			CHIA=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.5/resources/app.asar.unpacked/daemon/chia.exe
 		fi
 ###		MacOS
