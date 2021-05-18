@@ -7,7 +7,7 @@ case "${unameOut}" in
     Linux*)     		machine=Linux;;
     Darwin*)    		machine=Mac;;
     CYGWIN*)    		machine=Cygwin;;
-    MINGW64_NT-10.0*)	machine=MinGw;;
+    MINGW64_NT-10.0*)	machine=Windows;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
 echo "Running on: $machine"
