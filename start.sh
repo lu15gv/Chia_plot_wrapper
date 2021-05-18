@@ -24,7 +24,8 @@ echo "Base directory: $BASEDIR"
 		fi
 ###		Linux
 		if [ "$machine" = "Linux" ]; then
-		    cd /usr/lib/chia-blockchain
+			BASEDIR="/usr/lib/Chia_plot_wrapper"
+		    cd "/usr/lib/chia-blockchain"
 		    . ./activate
 		    chia init
 		    CHIA=chia
