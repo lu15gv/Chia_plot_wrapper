@@ -47,14 +47,19 @@ if [ ! -f "$LOGS_DIR" ]; then
 	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $LOGS_DIR
 fi
 
-$BASEDIR/plot.sh id="A" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="B" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="C" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="D" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="E" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="F" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="A" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="B" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="C" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="D" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="E" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="F" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="G" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="H" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="I" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="J" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+# $BASEDIR/plot.sh id="K" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 
-wait
+# wait
 
 echo "All queues have finished"
 
