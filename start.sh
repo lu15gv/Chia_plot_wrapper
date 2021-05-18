@@ -7,7 +7,7 @@ case "${unameOut}" in
     Linux*)     		machine=Linux;;
     Darwin*)    		machine=Mac;;
     CYGWIN*)    		machine=Cygwin;;
-    MINGW64_NT-10.0*)	machine=MinGw;;
+    MINGW64_NT-10.0*)	machine=Windows;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
 echo "Running on: $machine"
@@ -37,9 +37,9 @@ echo "Base directory: $BASEDIR"
 ###		6 parallel queues X 3 plots per queue = 18 plots in total.
 		QUEUE_SIZE=3
 ###	4.- Push notification
-		PUSH=false
+		PUSH=true
 		if [ "$PUSH" = true ]; then
-			source push_keys.sh
+			source "${BASEDIR}/push_keys.sh"
 		fi
 ### 5.- Other params, like temporal/final directory, threads and RAM, can be edited below.
 
@@ -48,19 +48,15 @@ if [ ! -f "$LOGS_DIR" ]; then
 	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $LOGS_DIR
 fi
 
-# $BASEDIR/plot.sh id="A" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="B" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="C" description="Running 11 in parallel" k=32 temp="D:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="D" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="E" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="F" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="G" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="H" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="I" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="J" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-# $BASEDIR/plot.sh id="K" description="Running 11 in parallel" k=32 temp="G:/" final="F:/" ram=5000 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="A" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="B" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="C" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="D" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="E" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="F" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+$BASEDIR/plot.sh id="G" description="Running 7 in parallel" k=32 temp="G:/" final="F:/" ram=3900 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 
-# wait
+wait
 
 echo "All queues have finished"
 
@@ -72,6 +68,6 @@ if [ "$PUSH" = true ]; then
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
-	-d 'title=All queus have finished' \
-	-d 'body=:)'
+	-d "title=All queus have finished" \
+	-d "body=Machine: ${machine}"
 fi
