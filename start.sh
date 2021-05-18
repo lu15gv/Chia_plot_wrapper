@@ -38,7 +38,7 @@ esac
 ###	4.- Push notification
 		PUSH=false
 		if [ "$PUSH" = true ]; then
-			source push_keys.sh
+			source "${BASEDIR}/push_keys.sh"
 		fi
 ### 5.- Other params, like temporal/final directory, threads and RAM, can be edited below.
 
