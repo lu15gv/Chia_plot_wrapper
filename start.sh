@@ -29,16 +29,13 @@ BASEDIR=$(dirname "$0")
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
 		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
 
-### 7.- Temporal directory
-		FINAL_DIRECTORY="F:/"
-
-###	8.- Push notification
+###	7.- Push notification
 		PUSH=true
-### 9.- RAM
+### 8.- RAM
 		RAM=3900
-### 10.- Threads
+### 9.- Threads
 		THREADS=2
-### 11.- K
+### 10.- K
 		K_SIZE=32
 
 #########################################################
