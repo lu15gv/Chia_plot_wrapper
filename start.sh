@@ -1,6 +1,47 @@
+set -e
 BASEDIR=$(dirname "$0")
 
-set -e
+###################### Instructions ######################
+### 1.- Set chia exectubale directory
+###		Windows
+		CHIA_ON_WINDOWS=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.5/resources/app.asar.unpacked/daemon/chia.exe
+###		MAC
+		CHIA_ON_MAC=/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon/chia
+###		Linux
+		CHIA_ON_LINUX=chia
+		
+### 2.- Only change it if you want to cahnge logs directory
+		LOGS_DIR=${BASEDIR}/logs/
+
+### 3.- Parallel builds
+		PARALLEL=6
+
+### 4.- Set how many plots you want for each queue in parallel
+		QUEUE_SIZE=3
+
+### 5.- Temporal directory
+		TEMPORAL_DIRECTORY="G:/"
+		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
+		# TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' )
+
+### 6.- Final directory
+		FINAL_DIRECTORY="I:/"
+		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
+		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
+
+### 7.- Temporal directory
+		FINAL_DIRECTORY="F:/"
+
+###	8.- Push notification
+		PUSH=true
+### 9.- RAM
+		RAM=3900
+### 10.- Threads
+		THREADS=2
+### 11.- K
+		K_SIZE=32
+
+#########################################################
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -11,60 +52,53 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-###### Instructions ######
-### 1.- Set chia exectubale directory
-###		Windows
-		if [ "$machine" = "Windows" ]; then
-			CHIA=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.5/resources/app.asar.unpacked/daemon/chia.exe
-		fi
-###		MacOS
-		if [ "$machine" = "Mac" ]; then
-			CHIA=/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon/chia
-		fi
-###		Linux
-		if [ "$machine" = "Linux" ]; then
-			BASEDIR="/usr/lib/Chia_plot_wrapper"
-		    cd "/usr/lib/chia-blockchain"
-		    . ./activate
-		    chia init
-		    CHIA=chia
-		fi
-### 2.- Only change it if you want to cahnge logs directory
-		LOGS_DIR=${BASEDIR}/logs/plots.csv
-### 2.- This was set for 6 parallel queues.
-### 3.- Set how many plots you want for each queue: 
-### 	For example, queue_size=3 will produce 3 plots for each queue, that means
-###		6 parallel queues X 3 plots per queue = 18 plots in total.
-		QUEUE_SIZE=1
-###	4.- Push notification
-		PUSH=true
-		if [ "$PUSH" = true ]; then
-			. "${BASEDIR}/push_keys.sh"
-		fi
-### 5.- Other params, like temporal/final directory, threads and RAM, can be edited below.
+if [ "$machine" = "Windows" ]; then
+	CHIA=${CHIA_ON_WINDOWS}
+fi
+if [ "$machine" = "Mac" ]; then
+	CHIA=${CHIA_ON_MAC}
+fi
+if [ "$machine" = "Linux" ]; then
+	BASEDIR="/usr/lib/Chia_plot_wrapper"
+    cd /usr/lib/chia-blockchain
+    . ./activate
+    chia init
+    CHIA=CHIA_ON_LINUX
+fi
+if [ "$PUSH" = true ]; then
+	source "${BASEDIR}/push_keys.sh"
+fi
+
+PLOTS_LOG="$LOGS_DIR/plots.csv"
+
+if [ ! -f "$PLOTS_LOG" ]; then
+    touch $PLOTS_LOG
+	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
+fi
 
 echo "Running on: $machine"
 echo "Base directory: $BASEDIR"
 
-if [ ! -f "$LOGS_DIR" ]; then
-    touch $LOGS_DIR
-	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $LOGS_DIR
-fi
+LETTERS=( 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
+PIDs=()
 
-$BASEDIR/plot.sh id="A" description="Running 10 in parallel" k=32 temp="/ssd1/" final="/hdd1/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="B" description="Running 10 in parallel" k=32 temp="/ssd1/" final="/hdd1/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="C" description="Running 10 in parallel" k=32 temp="/ssd1/" final="/hdd1/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="D" description="Running 10 in parallel" k=32 temp="/ssd1/" final="/hdd1/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="E" description="Running 10 in parallel" k=32 temp="/ssd1/" final="/hdd1/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="F" description="Running 10 in parallel" k=32 temp="/ssd2/" final="/hdd2/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="G" description="Running 10 in parallel" k=32 temp="/ssd2/" final="/hdd2/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="H" description="Running 10 in parallel" k=32 temp="/ssd2/" final="/hdd2/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="I" description="Running 10 in parallel" k=32 temp="/ssd2/" final="/hdd2/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
-$BASEDIR/plot.sh id="J" description="Running 10 in parallel" k=32 temp="/ssd2/" final="/hdd2/" ram=4500 threads=2 log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+for ((i=0; i<PARALLEL; i++)); do
+	echo $i
+	if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
+		TEMPORAL_DIRECTORY=${TEMPORAL_DIRECTORY_LIST[$i]}
+	fi
+	if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
+		FINAL_DIRECTORY=${FINAL_DIRECTORY_LIST[$i]}
+	fi
+   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+	PIDs+=($!)
+done
 
+rm -f ${BASEDIR}/plot.pid
+echo ${PIDs[@]} >> ${BASEDIR}/plot.pid
 wait
 
-echo "All queues have finished"
+echo "All queues finished"
 
 if [ "$machine" = "Linux" ]; then
     deactivate
@@ -74,6 +108,6 @@ if [ "$PUSH" = true ]; then
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
-	-d "title=All queus have finished" \
+	-d "title=All queues finished" \
 	-d "body=Machine: ${machine}"
 fi
