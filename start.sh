@@ -29,7 +29,9 @@ BASEDIR=$(dirname "$0")
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
 		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
 
-###	7.- Push notification
+###	7.- Push notifications
+		# In order to make them work, please create an account in https://pushback.io/ and download the App to your smart phone.
+		# Add your push back 'User ID' and 'Access Token' to 'push_keys.sh' file that is in the root of this project.
 		PUSH=true
 ### 8.- RAM
 		RAM=3900
