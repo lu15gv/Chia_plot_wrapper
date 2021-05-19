@@ -9,29 +9,36 @@ BASEDIR=$(dirname "$0")
 		CHIA_ON_MAC=/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon/chia
 ###		Linux
 		CHIA_ON_LINUX=chia
+		
 ### 2.- Only change it if you want to cahnge logs directory
 		LOGS_DIR=${BASEDIR}/logs/plots.csv
+
 ### 3.- Parallel builds
 		PARALLEL=6
-### 4.- Temporal directory
+
+### 4.- Set how many plots you want for each queue in parallel
+		QUEUE_SIZE=3
+
+### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
 		# TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' )
-### 5.- Final directory
+
+### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
 		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
-### 5.- Temporal directory
+
+### 7.- Temporal directory
 		FINAL_DIRECTORY="F:/"
-### 6.- Set how many plots you want for each queue in parallel: 
-		QUEUE_SIZE=3
-###	7.- Push notification
-		PUSH=false
-### 8.- RAM
+
+###	8.- Push notification
+		PUSH=true
+### 9.- RAM
 		RAM=3900
-### 9.- Threads
+### 10.- Threads
 		THREADS=2
-### 10.- K
+### 11.- K
 		K_SIZE=32
 
 #########################################################
