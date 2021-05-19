@@ -42,6 +42,18 @@ BASEDIR=$(dirname "$0")
 		K_SIZE=32
 
 #########################################################
+# Files generated:
+#
+# Chia_plot_wrapper
+#   |-plot.pid
+#   |-logs
+#       |-plots.csv
+#       |-A.log
+#       |-B.log
+#       |-C.log
+#       |-...
+#
+#########################################################
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
