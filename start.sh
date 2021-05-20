@@ -74,7 +74,7 @@ if [ "$machine" = "Linux" ]; then
  #    cd /usr/lib/chia-blockchain
  #    . ./activate
  #    chia init
-    CHIA=CHIA_ON_LINUX
+    CHIA=${CHIA_ON_LINUX}
 fi
 if [ "$PUSH" = true ]; then
 	source "${BASEDIR}/push_keys.sh"
@@ -94,14 +94,13 @@ LETTERS=( 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R
 PIDs=()
 
 for ((i=0; i<PARALLEL; i++)); do
-	echo $i
 	if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
 		TEMPORAL_DIRECTORY=${TEMPORAL_DIRECTORY_LIST[$i]}
 	fi
 	if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 		FINAL_DIRECTORY=${FINAL_DIRECTORY_LIST[$i]}
 	fi
-   	sh $BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 	PIDs+=($!)
 done
 
