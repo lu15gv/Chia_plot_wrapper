@@ -70,10 +70,10 @@ if [ "$machine" = "Mac" ]; then
 	CHIA=${CHIA_ON_MAC}
 fi
 if [ "$machine" = "Linux" ]; then
-	BASEDIR="/usr/lib/Chia_plot_wrapper"
-    cd /usr/lib/chia-blockchain
-    . ./activate
-    chia init
+	# BASEDIR="/usr/lib/Chia_plot_wrapper"
+ #    cd /usr/lib/chia-blockchain
+ #    . ./activate
+ #    chia init
     CHIA=CHIA_ON_LINUX
 fi
 if [ "$PUSH" = true ]; then
@@ -111,9 +111,9 @@ wait
 
 echo "All queues finished"
 
-if [ "$machine" = "Linux" ]; then
-    deactivate
-fi
+# if [ "$machine" = "Linux" ]; then
+#     deactivate
+# fi
 
 if [ "$PUSH" = true ]; then
     curl https://api.pushback.io/v1/send \
