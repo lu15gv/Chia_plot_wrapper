@@ -105,7 +105,7 @@ for ((i=0; i<PARALLEL; i++)); do
 	if [ ! -z "${QUEUE_SIZE_LIST}" ]; then
 		QUEUE_SIZE=${QUEUE_SIZE_LIST[$i]}
 	fi
-   	sh $BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 	PIDs+=($!)
 done
 
