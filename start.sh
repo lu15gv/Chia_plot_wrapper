@@ -19,7 +19,7 @@ BASEDIR=$(dirname "$0")
 		PARALLEL=5
 
 ### 4.- Set how many plots you want for each queue in parallel
-		QUEUE_SIZE=1
+		QUEUE_SIZE=9
 
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"

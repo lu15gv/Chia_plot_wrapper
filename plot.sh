@@ -19,14 +19,14 @@ do
     esac    
 done
 
-CHIA_LOG="$LOG/${ID}.log"
-rm -f "$CHIA_LOG"
+# CHIA_LOG="$LOG/${ID}.log"
+# rm -f "$CHIA_LOG"
 
 for i in $(seq 1 $QUEUE); do 
     START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-    $CHIA plots create -k $K -b $RAM -r $THREADS -t $TEMP -d $FINAL | tee "$CHIA_LOG"
+    $CHIA plots create -k $K -b $RAM -r $THREADS -t $TEMP -d $FINAL #| tee "$CHIA_LOG"
     END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
     echo "$ID,$i,$DESCRIPTION,$K,$TEMP,$FINAL,$RAM,$THREADS,$START_TIME,$END_TIME" >> "$LOG/plots.csv"
 done
 
-echo "Queue $ID finished" >> "$CHIA_LOG"
+# echo "Queue $ID finished" >> "$CHIA_LOG"
