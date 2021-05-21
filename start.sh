@@ -16,20 +16,22 @@ BASEDIR=$(dirname "$0")
 		LOGS_DIR=${BASEDIR}/logs/
 
 ### 3.- Parallel builds
-		PARALLEL=5
+		PARALLEL=10
 
 ### 4.- Set how many plots you want for each queue in parallel
 		QUEUE_SIZE=9
 
+		QUEUE_SIZE_LIST=( 9 9 9 9 9 7 7 7 7 7 )
+
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		TEMPORAL_DIRECTORY_LIST=('/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' )
+		TEMPORAL_DIRECTORY_LIST=('/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd/' )
 
 ### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		FINAL_DIRECTORY_LIST=('/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' )
+		FINAL_DIRECTORY_LIST=('/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' '/hdd2/' '/hdd2/' )
 
 ###	7.- Push notification
 		PUSH=true
@@ -99,6 +101,9 @@ for ((i=0; i<PARALLEL; i++)); do
 	fi
 	if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 		FINAL_DIRECTORY=${FINAL_DIRECTORY_LIST[$i]}
+	fi
+	if [ ! -z "${QUEUE_SIZE_LIST}" ]; then
+		QUEUE_SIZE=${QUEUE_SIZE_LIST[$i]}
 	fi
    	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
 	PIDs+=($!)
