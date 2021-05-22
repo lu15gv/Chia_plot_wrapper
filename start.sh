@@ -58,28 +58,25 @@ BASEDIR=$(dirname "$0")
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Linux*)     		machine=Linux;;
-    Darwin*)    		machine=Mac;;
-    CYGWIN*)    		machine=Cygwin;;
-    MINGW64_NT-10.0*)	machine=Windows;;
-    *)          machine="UNKNOWN:${unameOut}"
+    Linux*)     		MACHINE=Linux;;
+    Darwin*)    		MACHINE=Mac;;
+    CYGWIN*)    		MACHINE=Cygwin;;
+    MINGW64_NT-10.0*)	MACHINE=Windows;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
 esac
 
-if [ "$machine" = "Windows" ]; then
+if [ "$MACHINE" = "Windows" ]; then
 	CHIA=${CHIA_ON_WINDOWS}
 fi
-if [ "$machine" = "Mac" ]; then
+if [ "$MACHINE" = "Mac" ]; then
 	CHIA=${CHIA_ON_MAC}
 fi
-if [ "$machine" = "Linux" ]; then
+if [ "$MACHINE" = "Linux" ]; then
 	BASEDIR="/usr/lib/Chia_plot_wrapper"
  #    cd /usr/lib/chia-blockchain
  #    . ./activate
  #    chia init
     CHIA=${CHIA_ON_LINUX}
-fi
-if [ "$PUSH" = true ]; then
-	source "${BASEDIR}/push_keys.sh"
 fi
 
 PLOTS_LOG="$LOGS_DIR/plots.csv"
@@ -89,7 +86,7 @@ if [ ! -f "$PLOTS_LOG" ]; then
 	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
 fi
 
-echo "Running on: $machine"
+echo "Running on: $MACHINE"
 echo "Base directory: $BASEDIR"
 
 LETTERS=( 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
@@ -105,7 +102,18 @@ for ((i=0; i<PARALLEL; i++)); do
 	if [ ! -z "${QUEUE_SIZE_LIST}" ]; then
 		QUEUE_SIZE=${QUEUE_SIZE_LIST[$i]}
 	fi
-   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+
+   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" \
+   	k=$K_SIZE \
+   	temp=$TEMPORAL_DIRECTORY \
+   	final=$FINAL_DIRECTORY \
+   	ram=$RAM threads=$THREADS \
+   	log=$LOGS_DIR \
+   	queue_size=$QUEUE_SIZE \
+   	chia=$CHIA \
+   	machine=$MACHINE \
+   	push=$PUSH &
+
 	PIDs+=($!)
 done
 
@@ -115,14 +123,15 @@ wait
 
 echo "All queues finished"
 
-# if [ "$machine" = "Linux" ]; then
+# if [ "$MACHINE" = "Linux" ]; then
 #     deactivate
 # fi
 
 if [ "$PUSH" = true ]; then
+	source "${BASEDIR}/push_keys.sh"
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
 	-d "title=All queues finished" \
-	-d "body=Machine: ${machine}"
+	-d "body=MACHINE: ${MACHINE}"
 fi
