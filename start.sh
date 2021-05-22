@@ -26,7 +26,7 @@ BASEDIR=$(dirname "$0")
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		TEMPORAL_DIRECTORY_LIST=('/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd/' )
+		TEMPORAL_DIRECTORY_LIST=('/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' )
 
 ### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
