@@ -16,7 +16,7 @@ BASEDIR=$(dirname "$0")
 		LOGS_DIR=${BASEDIR}/logs/
 
 ### 3.- Parallel builds
-		PARALLEL=6
+		PARALLEL=10
 
 ### 4.- Set how many plots you want for each queue in parallel
 		QUEUE_SIZE=1
@@ -26,19 +26,19 @@ BASEDIR=$(dirname "$0")
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' )
+		TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' '/ssd2/' )
 
 ### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
+		FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' '/hdd2/' '/hdd2/' )
 
 ###	7.- Push notification
 		PUSH=true
 ### 8.- RAM
 		RAM=5000
 ### 9.- Threads
-		THREADS=3
+		THREADS=2
 ### 10.- K
 		K_SIZE=32
 
