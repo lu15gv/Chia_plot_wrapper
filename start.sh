@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 BASEDIR=$(dirname "$0")
 
@@ -17,26 +19,26 @@ BASEDIR=$(dirname "$0")
 		PARALLEL=6
 
 ### 4.- Set how many plots you want for each queue in parallel
-		QUEUE_SIZE=3
+		QUEUE_SIZE=1
+
+		# QUEUE_SIZE_LIST=( 9 9 9 9 9 7 7 7 7 7 )
 
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		# TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' )
+		TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd2/' '/ssd2/' '/ssd2/' )
 
 ### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
+		FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd2/' '/hdd2/' '/hdd2/' )
 
-###	7.- Push notifications
-		# In order to make them work, please create an account in https://pushback.io/ and download the App to your smart phone.
-		# Add your push back 'User ID' and 'Access Token' to 'push_keys.sh' file that is in the root of this project.
+###	7.- Push notification
 		PUSH=true
 ### 8.- RAM
-		RAM=3900
+		RAM=5000
 ### 9.- Threads
-		THREADS=2
+		THREADS=3
 ### 10.- K
 		K_SIZE=32
 
@@ -56,28 +58,25 @@ BASEDIR=$(dirname "$0")
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Linux*)     		machine=Linux;;
-    Darwin*)    		machine=Mac;;
-    CYGWIN*)    		machine=Cygwin;;
-    MINGW64_NT-10.0*)	machine=Windows;;
-    *)          machine="UNKNOWN:${unameOut}"
+    Linux*)     		MACHINE=Linux;;
+    Darwin*)    		MACHINE=Mac;;
+    CYGWIN*)    		MACHINE=Cygwin;;
+    MINGW64_NT-10.0*)	MACHINE=Windows;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
 esac
 
-if [ "$machine" = "Windows" ]; then
+if [ "$MACHINE" = "Windows" ]; then
 	CHIA=${CHIA_ON_WINDOWS}
 fi
-if [ "$machine" = "Mac" ]; then
+if [ "$MACHINE" = "Mac" ]; then
 	CHIA=${CHIA_ON_MAC}
 fi
-if [ "$machine" = "Linux" ]; then
+if [ "$MACHINE" = "Linux" ]; then
 	BASEDIR="/usr/lib/Chia_plot_wrapper"
-    cd /usr/lib/chia-blockchain
-    . ./activate
-    chia init
-    CHIA=CHIA_ON_LINUX
-fi
-if [ "$PUSH" = true ]; then
-	source "${BASEDIR}/push_keys.sh"
+ #    cd /usr/lib/chia-blockchain
+ #    . ./activate
+ #    chia init
+    CHIA=${CHIA_ON_LINUX}
 fi
 
 PLOTS_LOG="$LOGS_DIR/plots.csv"
@@ -87,21 +86,34 @@ if [ ! -f "$PLOTS_LOG" ]; then
 	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
 fi
 
-echo "Running on: $machine"
+echo "Running on: $MACHINE"
 echo "Base directory: $BASEDIR"
 
 LETTERS=( 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
 PIDs=()
 
 for ((i=0; i<PARALLEL; i++)); do
-	echo $i
 	if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
 		TEMPORAL_DIRECTORY=${TEMPORAL_DIRECTORY_LIST[$i]}
 	fi
 	if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 		FINAL_DIRECTORY=${FINAL_DIRECTORY_LIST[$i]}
 	fi
-   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" k=$K_SIZE temp=$TEMPORAL_DIRECTORY final=$FINAL_DIRECTORY ram=$RAM threads=$THREADS log=$LOGS_DIR queue_size=$QUEUE_SIZE chia=$CHIA &
+	if [ ! -z "${QUEUE_SIZE_LIST}" ]; then
+		QUEUE_SIZE=${QUEUE_SIZE_LIST[$i]}
+	fi
+
+   	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" \
+   	k=$K_SIZE \
+   	temp=$TEMPORAL_DIRECTORY \
+   	final=$FINAL_DIRECTORY \
+   	ram=$RAM threads=$THREADS \
+   	log=$LOGS_DIR \
+   	queue_size=$QUEUE_SIZE \
+   	chia=$CHIA \
+   	machine=$MACHINE \
+   	push=$PUSH &
+
 	PIDs+=($!)
 done
 
@@ -111,14 +123,15 @@ wait
 
 echo "All queues finished"
 
-if [ "$machine" = "Linux" ]; then
-    deactivate
-fi
+# if [ "$MACHINE" = "Linux" ]; then
+#     deactivate
+# fi
 
 if [ "$PUSH" = true ]; then
+	source "${BASEDIR}/push_keys.sh"
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
 	-d "title=All queues finished" \
-	-d "body=Machine: ${machine}"
+	-d "body=MACHINE: ${MACHINE}"
 fi
