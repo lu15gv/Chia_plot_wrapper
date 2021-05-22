@@ -6,7 +6,7 @@ BASEDIR=$(dirname "$0")
 ###################### Instructions ######################
 ### 1.- Set chia exectubale directory
 ###		Windows
-		CHIA_ON_WINDOWS=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.5/resources/app.asar.unpacked/daemon/chia.exe
+		CHIA_ON_WINDOWS=C:/Users/luis1/AppData/Local/chia-blockchain/app-1.1.6/resources/app.asar.unpacked/daemon/chia.exe
 ###		MAC
 		CHIA_ON_MAC=/Applications/Chia.app/Contents/Resources/app.asar.unpacked/daemon/chia
 ###		Linux
