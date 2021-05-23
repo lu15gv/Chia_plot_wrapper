@@ -19,7 +19,7 @@ BASEDIR=$(dirname "$0")
 		PARALLEL=10
 
 ### 4.- Set how many plots you want for each queue in parallel
-		QUEUE_SIZE=1
+		QUEUE_SIZE=4
 
 		# QUEUE_SIZE_LIST=( 9 9 9 9 9 7 7 7 7 7 )
 
