@@ -26,12 +26,12 @@ BASEDIR=$(dirname "$0")
 ### 5.- Temporal directory
 		TEMPORAL_DIRECTORY="G:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' )
+		TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' )
 
 ### 6.- Final directory
 		FINAL_DIRECTORY="I:/"
 		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' )
+		FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' )
 
 ###	7.- Push notification
 		PUSH=true
@@ -88,22 +88,20 @@ fi
 
 if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
 	SIZE=${#TEMPORAL_DIRECTORY_LIST[@]}
-	if [ $SIZE < $PARALLEL ]; then
-		echo "TEMPORAL_DIRECTORY_LIST size: $SIZE, bust be: $PARALLEL"
+	if [ $SIZE -lt $PARALLEL ]; then
+		echo "TEMPORAL_DIRECTORY_LIST size: $SIZE, but must be: $PARALLEL"
 		exit 1
 	fi
 fi
 
 if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 	SIZE=${#FINAL_DIRECTORY_LIST[@]}
-	if [ $SIZE < $PARALLEL ]; then
-		echo "FINAL_DIRECTORY_LIST size: $SIZE, bust be: $PARALLEL"
+	if [ $SIZE -lt $PARALLEL ]; then
+		echo "FINAL_DIRECTORY_LIST size: $SIZE, but must be: $PARALLEL"
 		exit 1
 	fi
 fi
 
-echo "test"
-exit 1
 echo "Running on: $MACHINE"
 echo "Base directory: $BASEDIR"
 
