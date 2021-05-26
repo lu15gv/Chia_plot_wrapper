@@ -86,6 +86,24 @@ if [ ! -f "$PLOTS_LOG" ]; then
 	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
 fi
 
+if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
+	SIZE=${#TEMPORAL_DIRECTORY_LIST[@]}
+	if [ $SIZE < PARALLEL ]; then
+		echo "TEMPORAL_DIRECTORY_LIST size: $SIZE, bust be: $PARALLEL"
+		exit 1
+	fi
+fi
+
+if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
+	SIZE=${#FINAL_DIRECTORY_LIST[@]}
+	if [ $SIZE < PARALLEL ]; then
+		echo "FINAL_DIRECTORY_LIST size: $SIZE, bust be: $PARALLEL"
+		exit 1
+	fi
+fi
+
+echo "test"
+exit 1
 echo "Running on: $MACHINE"
 echo "Base directory: $BASEDIR"
 
