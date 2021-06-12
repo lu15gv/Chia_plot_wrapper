@@ -53,7 +53,7 @@ send_push() {
 if [ -z "${MAD_MAX}" -o "${MAD_MAX}" = false ]; then
   for i in $(seq 1 $QUEUE); do 
     START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-    # $CHIA plots create -k $K -b $RAM -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL #| tee "$CHIA_LOG"
+    $CHIA plots create -k $K -b $RAM -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL #| tee "$CHIA_LOG"
     END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
     echo "$ID,"Oficial",$i,$DESCRIPTION,$K,$TEMP,$TEMP_2,$FINAL,$RAM,$THREADS,$START_TIME,$END_TIME" #>> "$LOG/plots.csv"
     BODY="body=Queue ${i} of ${QUEUE} finished. Start: ${START_TIME} End: ${END_TIME}"
@@ -61,9 +61,9 @@ if [ -z "${MAD_MAX}" -o "${MAD_MAX}" = false ]; then
   done
 else
   START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-  # chia_plot -n $QUEUE -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL -p $POOL_PUBLIC_KEY -f $FARMER_PUBLIC_KEY
+  chia_plot -n $QUEUE -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL -p $POOL_PUBLIC_KEY -f $FARMER_PUBLIC_KEY
   END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-  echo "$ID,"MadMax",$QUEUE,$DESCRIPTION,$K,$TEMP,$TEMP_2,$FINAL,$RAM,$THREADS,$START_TIME,$END_TIME" #>> "$LOG/plots.csv"
+  echo "$ID,"MadMax",$QUEUE,$DESCRIPTION,$K,$TEMP,$TEMP_2,$FINAL,"-",$THREADS,$START_TIME,$END_TIME" #>> "$LOG/plots.csv"
   BODY="body=MadMax finished. Start: ${START_TIME} End: ${END_TIME}"
   send_push $BODY || true
 fi
