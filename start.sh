@@ -3,6 +3,31 @@
 set -e
 BASEDIR=$(dirname "$0")
 
+echo "Base directory: $BASEDIR"
+
+for ARGUMENT in "$@"
+do
+  KEY=$(echo $ARGUMENT | cut -f1 -d=)
+  VALUE=$(echo $ARGUMENT | cut -f2 -d=)
+  case "$KEY" in
+  	madmax)								MAD_MAX=${VALUE} ;; 
+    parallel)           	PARALLEL=${VALUE} ;; 
+    queues)           		QUEUE_SIZE=${VALUE} ;; 
+    tmpdir)              	TEMP=${VALUE} ;;
+		tmpdir2)              TEMP_2=${VALUE} ;;
+    tmpdir-list)   				TEMP_LIST=${VALUE} ;;
+    finaldir)  						FINAL_DIRECTORY=${VALUE} ;;
+    finaldir-list)        FINAL_DIRECTORY_LIST=${VALUE} ;;
+    push) 								PUSH=${VALUE} ;;
+    ram)            		  RAM=${VALUE} ;;
+    threads)              THREADS=${VALUE} ;;
+    ksize)                K_SIZE=${VALUE} ;;
+    *)   
+  esac    
+done
+
+# chia madmax=true parallel=1 queues=1 tmpdir=/ssd1/ tmpdir2=/ssd1/ finaldir=/hdd1/ push=true ram=15000 threads=12 ksize=32
+
 ###################### Instructions ######################
 ### 1.- Set chia exectubale directory
 ###		Windows
@@ -15,32 +40,6 @@ BASEDIR=$(dirname "$0")
 ### 2.- Only change it if you want to cahnge logs directory
 		LOGS_DIR=${BASEDIR}/logs/
 
-### 3.- Parallel builds
-		PARALLEL=3
-
-### 4.- Set how many plots you want for each queue in parallel
-		QUEUE_SIZE=3
-
-		# QUEUE_SIZE_LIST=( 9 9 9 9 9 7 7 7 7 7 )
-
-### 5.- Temporal directory
-		TEMPORAL_DIRECTORY="/ssd1/"
-		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		# TEMPORAL_DIRECTORY_LIST=( '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' '/ssd1/' )
-
-### 6.- Final directory
-		FINAL_DIRECTORY="/hdd1/"
-		# This is optional, only uncomment it if you want to choice different directories for each parallel chia ploter. List size must match PARALLEL
-		# FINAL_DIRECTORY_LIST=( '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' '/hdd1/' )
-
-###	7.- Push notification
-		PUSH=true
-### 8.- RAM
-		RAM=15000
-### 9.- Threads
-		THREADS=6
-### 10.- K
-		K_SIZE=33
 
 #########################################################
 # Files generated:
@@ -83,13 +82,13 @@ PLOTS_LOG="$LOGS_DIR/plots.csv"
 
 if [ ! -f "$PLOTS_LOG" ]; then
     touch $PLOTS_LOG
-	echo "ID,Queue,Description,k,Temporal dir,Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
+	echo "ID,Ploter,Queue,Description,k,Temp dir, Temp dir 2, Final dir,RAM,Threads,Start,End" >> $PLOTS_LOG
 fi
 
-if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
-	SIZE=${#TEMPORAL_DIRECTORY_LIST[@]}
+if [ ! -z "${TEMP_LIST}" ]; then
+	SIZE=${#TEMP_LIST[@]}
 	if [ $SIZE -lt $PARALLEL ]; then
-		echo "TEMPORAL_DIRECTORY_LIST size: $SIZE, but must be: $PARALLEL"
+		echo "TEMP_LIST size: $SIZE, but must be: $PARALLEL"
 		exit 1
 	fi
 fi
@@ -102,15 +101,18 @@ if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 	fi
 fi
 
+if [ -z "${TEMP_2}" -o "${TEMP_2}" = "" ]; then
+	TEMP_2=${TEMP}
+fi
+
 echo "Running on: $MACHINE"
-echo "Base directory: $BASEDIR"
 
 LETTERS=( 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
 PIDs=()
 
 for ((i=0; i<PARALLEL; i++)); do
-	if [ ! -z "${TEMPORAL_DIRECTORY_LIST}" ]; then
-		TEMPORAL_DIRECTORY=${TEMPORAL_DIRECTORY_LIST[$i]}
+	if [ ! -z "${TEMP_LIST}" ]; then
+		TEMP=${TEMP_LIST[$i]}
 	fi
 	if [ ! -z "${FINAL_DIRECTORY_LIST}" ]; then
 		FINAL_DIRECTORY=${FINAL_DIRECTORY_LIST[$i]}
@@ -121,14 +123,16 @@ for ((i=0; i<PARALLEL; i++)); do
 
    	$BASEDIR/plot.sh id=${LETTERS[$i]} description="Running $PARALLEL in parallel" \
    	k=$K_SIZE \
-   	temp=$TEMPORAL_DIRECTORY \
+   	tempdir=$TEMP \
+   	tempdir2=$TEMP_2 \
    	final=$FINAL_DIRECTORY \
    	ram=$RAM threads=$THREADS \
    	log=$LOGS_DIR \
    	queue_size=$QUEUE_SIZE \
    	chia=$CHIA \
    	machine=$MACHINE \
-   	push=$PUSH &
+   	push=$PUSH \
+   	madmax=$MAD_MAX &
 
 	PIDs+=($!)
 done
@@ -144,7 +148,7 @@ echo "All queues finished"
 # fi
 
 if [ "$PUSH" = true ]; then
-	source "${BASEDIR}/push_keys.sh"
+	source "${BASEDIR}/keys.sh"
     curl https://api.pushback.io/v1/send \
 	-u "${ACCESS_TOKEN}:" \
 	-d "id=${USER_ID}" \
