@@ -22,6 +22,7 @@ do
     ram)            		RAM=${VALUE} ;;
     threads)              	THREADS=${VALUE} ;;
     ksize)                	K_SIZE=${VALUE} ;;
+	contract)    			CONTRACT_ADDRESS=${VALUE} ;;
     *)   
   esac    
 done
