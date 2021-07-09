@@ -65,9 +65,12 @@ if [ -z "${MAD_MAX}" -o "${MAD_MAX}" = false ]; then
   done
 else
   START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo "Mad Max"
   if [ -z "${CONTRACT_ADDRESS}" ]; then
+    echo "Solo"
     chia_plot -n $QUEUE -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL -p $POOL_PUBLIC_KEY -f $FARMER_PUBLIC_KEY
   else
+    echo "Pool"
     chia_plot -n $QUEUE -r $THREADS -t $TEMP -2 $TEMP_2 -d $FINAL -c $CONTRACT_ADDRESS
   fi
   END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
