@@ -10,18 +10,18 @@ do
   KEY=$(echo $ARGUMENT | cut -f1 -d=)
   VALUE=$(echo $ARGUMENT | cut -f2 -d=)
   case "$KEY" in
-  	madmax)								MAD_MAX=${VALUE} ;; 
+  	madmax)					MAD_MAX=${VALUE} ;; 
     parallel)           	PARALLEL=${VALUE} ;; 
     queues)           		QUEUE_SIZE=${VALUE} ;; 
     tmpdir)              	TEMP=${VALUE} ;;
-		tmpdir2)              TEMP_2=${VALUE} ;;
-    tmpdir-list)   				TEMP_LIST=${VALUE} ;;
-    finaldir)  						FINAL_DIRECTORY=${VALUE} ;;
-    finaldir-list)        FINAL_DIRECTORY_LIST=${VALUE} ;;
-    push) 								PUSH=${VALUE} ;;
-    ram)            		  RAM=${VALUE} ;;
-    threads)              THREADS=${VALUE} ;;
-    ksize)                K_SIZE=${VALUE} ;;
+	tmpdir2)              	TEMP_2=${VALUE} ;;
+    tmpdir-list)   			TEMP_LIST=${VALUE} ;;
+    finaldir)  				FINAL_DIRECTORY=${VALUE} ;;
+    finaldir-list)       	FINAL_DIRECTORY_LIST=${VALUE} ;;
+    push) 					PUSH=${VALUE} ;;
+    ram)            		RAM=${VALUE} ;;
+    threads)              	THREADS=${VALUE} ;;
+    ksize)                	K_SIZE=${VALUE} ;;
     *)   
   esac    
 done
@@ -132,6 +132,7 @@ for ((i=0; i<PARALLEL; i++)); do
    	chia=$CHIA \
    	machine=$MACHINE \
    	push=$PUSH \
+   	contract=$CONTRACT_ADDRESS \
    	madmax=$MAD_MAX &
 
 	PIDs+=($!)
